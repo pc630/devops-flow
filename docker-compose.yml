@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Jjwm3pkg@
+      - MYSQL_DB=online_store
+    volumes:
+      - .:/app
+    command: >
+      sh -c "cp /app/database.yaml /app/market/database.yaml && python run.py"
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: Jjwm3pkg@
+      MYSQL_DATABASE: online_store
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./Dump.sql:/docker-entrypoint-initdb.d/Dump.sql
